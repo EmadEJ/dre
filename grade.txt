@@ -1,4 +1,4 @@
-Thu Jun  1 13:05:36 UTC 2023
+Thu Jun  1 13:09:23 UTC 2023
 GAg: 
 Test passed, 1000 out of 1000 assertions passed
 
@@ -23,6 +23,11 @@ Exception in thread "main" hardwar.branch.prediction.judge.TestFailedException: 
 SAp: 
 Exception in thread "main" hardwar.branch.prediction.judge.TestFailedException: Test failed, 342 out of 1000 assertions passed
 	at hardwar.branch.prediction.judge.Judge.main(Judge.java:39)
+null
++-------------------+
+|r  | 0 | 0 | 0 | 0 |
++-------------------+
+
 Exception in thread "main" java.lang.NullPointerException
 	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
 	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
@@ -38,7 +43,7 @@ Exception in thread "main" java.lang.NullPointerException
 	at hardwar.branch.prediction.shared.devices.PerAddressPredictionHistoryTable.putIfAbsent(PerAddressPredictionHistoryTable.java:107)
 	at hardwar.branch.prediction.shared.devices.PerAddressPredictionHistoryTable.setDefault(PerAddressPredictionHistoryTable.java:119)
 	at hardwar.branch.prediction.shared.devices.PerAddressPredictionHistoryTable.setDefault(PerAddressPredictionHistoryTable.java:31)
-	at hardwar.branch.prediction.judged.SAs.SAs.predict(SAs.java:45)
+	at hardwar.branch.prediction.judged.SAs.SAs.predict(SAs.java:47)
 	at hardwar.branch.prediction.judge.PredictorSimulator.lambda$simulate$0(PredictorSimulator.java:27)
 	at java.base/java.util.stream.IntPipeline$1$1.accept(IntPipeline.java:180)
 	at java.base/java.util.stream.Streams$RangeIntSpliterator.forEachRemaining(Streams.java:104)
