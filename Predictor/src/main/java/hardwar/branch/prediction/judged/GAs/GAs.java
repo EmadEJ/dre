@@ -34,14 +34,18 @@ public class GAs implements BranchPredictor {
         this.hashMode = HashMode.XOR;
 
         // Initialize the BHR register with the given size and no default value
-        BHR = null;
+        this.BHR = new SIPORegister("BHR", BHRSize, null);
 
         // Initializing the PAPHT with K bit as PHT selector and 2^BHRSize row as each PHT entries
         // number and SCSize as block size
-        PSPHT = null;
+        this.PSPHT = new PerAddressPredictionHistoryTable(SCSize, branchInstructionSize, KSize);
 
         // Initialize the saturating counter
-        SC = null;
+        Bit[] zero = new Bit[SCSize];
+        for(int i=0;i<SCSize;i++) {
+            zero[i] = Bit.ZERO;
+        }
+        SC = new SIPORegister("SC", KSize, zero);
     }
 
     /**
@@ -53,7 +57,11 @@ public class GAs implements BranchPredictor {
      */
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
-        // TODO: complete Task 1
+//        // TODO: complete Task 1
+//        Bit[] current = BHR.read();
+//        PSPHT.setDefault(current, getDefaultBlock());
+//        Bit[] values = PSPHT.get(current);
+//        
         return BranchResult.NOT_TAKEN;
     }
 
