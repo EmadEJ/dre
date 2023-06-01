@@ -44,18 +44,18 @@ public class GAg implements BranchPredictor {
      */
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
-//        // TODO : complete Task 1
-//        //System.err.println(BHR.monitor());
-//        Bit[] current = BHR.read();
-//        //System.err.println(PHT.monitor());
-//        PHT.setDefault(current, getDefaultBlock());
-//        Bit[] values = PHT.get(current);
-//        SC.load(values);
-//
-//        if(values[0] == Bit.ONE) {
-//            return BranchResult.TAKEN;
-//        } else {
-//            return BranchResult.NOT_TAKEN;
+        // TODO : complete Task 1
+        //System.err.println(BHR.monitor());
+        Bit[] current = BHR.read();
+        //System.err.println(PHT.monitor());
+        PHT.setDefault(current, getDefaultBlock());
+        Bit[] values = PHT.get(current);
+        SC.load(values);
+
+        if(values[0] == Bit.ONE) {
+            return BranchResult.TAKEN;
+        } else {
+            return BranchResult.NOT_TAKEN;
         }
     }
 

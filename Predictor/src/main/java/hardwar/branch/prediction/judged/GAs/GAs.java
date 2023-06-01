@@ -57,11 +57,11 @@ public class GAs implements BranchPredictor {
      */
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
-        // TODO: complete Task 1
-        Bit[] current = BHR.read();
-        PSPHT.setDefault(current, getDefaultBlock());
-        Bit[] values = PSPHT.get(current);
-        
+//        // TODO: complete Task 1
+//        Bit[] current = BHR.read();
+//        PSPHT.setDefault(current, getDefaultBlock());
+//        Bit[] values = PSPHT.get(current);
+//        
         return BranchResult.NOT_TAKEN;
     }
 
