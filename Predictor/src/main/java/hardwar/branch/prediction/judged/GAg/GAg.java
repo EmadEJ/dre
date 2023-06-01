@@ -45,9 +45,9 @@ public class GAg implements BranchPredictor {
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
         // TODO : complete Task 1
-        System.err.println(BHR.monitor());
+        //System.err.println(BHR.monitor());
         Bit[] current = BHR.read();
-        System.err.println(PHT.monitor());
+        //System.err.println(PHT.monitor());
         PHT.setDefault(current, getDefaultBlock());
         Bit[] values = PHT.get(current);
         SC.load(values);
@@ -70,10 +70,10 @@ public class GAg implements BranchPredictor {
         // TODO: complete Task 2
         Bit[] currentNum = SC.read();
         if(actual.equals(BranchResult.TAKEN)) {
-            CombinationalLogic.count(currentNum, true, CountMode.SATURATING);
+            currentNum = CombinationalLogic.count(currentNum, true, CountMode.SATURATING);
         }
         else {
-            CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
+            currentNum = CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
         }
         PHT.put(BHR.read(), currentNum);
         if(actual.equals(BranchResult.TAKEN)) {
