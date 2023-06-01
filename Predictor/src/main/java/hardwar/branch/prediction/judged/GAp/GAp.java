@@ -53,7 +53,7 @@ public class GAp implements BranchPredictor {
         // TODO: complete Task 1
         Bit[] current = BHR.read();
         PAPHT.setDefault(current, getDefaultBlock());
-        Bit[] values = PAPHT.get(getCacheEntry(branchInstruction.getInstructionAddress()));
+        Bit[] values = PAPHT.get(getCacheEntry(branchInstruction.getJumpAddress()));
         SC.load(values);
 
 
@@ -82,7 +82,7 @@ public class GAp implements BranchPredictor {
         }
 
         //PHT.put(BHR.read(), currentNum);
-        PAPHT.put(getCacheEntry(branchInstruction.getInstructionAddress()), currentNum);
+        PAPHT.put(getCacheEntry(branchInstruction.getJumpAddress()), currentNum);
         if(actual.equals(BranchResult.TAKEN)) {
             BHR.insert(Bit.ONE);
         }
