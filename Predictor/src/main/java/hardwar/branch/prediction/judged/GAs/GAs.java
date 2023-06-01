@@ -38,14 +38,10 @@ public class GAs implements BranchPredictor {
 
         // Initializing the PAPHT with K bit as PHT selector and 2^BHRSize row as each PHT entries
         // number and SCSize as block size
-        this.PSPHT = new PerAddressPredictionHistoryTable(SCSize, branchInstructionSize, KSize);
+        this.PSPHT = new PerAddressPredictionHistoryTable(SCSize, (1<<BHRSize), KSize);
 
         // Initialize the saturating counter
-        Bit[] zero = new Bit[SCSize];
-        for(int i=0;i<SCSize;i++) {
-            zero[i] = Bit.ZERO;
-        }
-        SC = new SIPORegister("SC", KSize, zero);
+        SC = new SIPORegister("SC", KSize, null);
     }
 
     /**
