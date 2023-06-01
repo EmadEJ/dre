@@ -1,4 +1,5 @@
-Thu Jun  1 12:12:42 UTC 2023
+Thu Jun  1 12:19:20 UTC 2023
+[Lhardwar.branch.prediction.shared.Bit;@df27fae
 Exception in thread "main" java.lang.NullPointerException
 	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
 	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
@@ -10,8 +11,9 @@ Exception in thread "main" java.lang.NullPointerException
 	at hardwar.branch.prediction.shared.Bit.arrayToString(Bit.java:48)
 	at hardwar.branch.prediction.shared.devices.PageHistoryTable.get(PageHistoryTable.java:54)
 	at hardwar.branch.prediction.shared.devices.PageHistoryTable.putIfAbsent(PageHistoryTable.java:84)
-	at hardwar.branch.prediction.shared.devices.PageHistoryTable.putIfAbsent(PageHistoryTable.java:31)
-	at hardwar.branch.prediction.judged.GAg.GAg.predict(GAg.java:53)
+	at hardwar.branch.prediction.shared.devices.PageHistoryTable.setDefault(PageHistoryTable.java:103)
+	at hardwar.branch.prediction.shared.devices.PageHistoryTable.setDefault(PageHistoryTable.java:31)
+	at hardwar.branch.prediction.judged.GAg.GAg.predict(GAg.java:54)
 	at hardwar.branch.prediction.judge.PredictorSimulator.lambda$simulate$0(PredictorSimulator.java:27)
 	at java.base/java.util.stream.IntPipeline$1$1.accept(IntPipeline.java:180)
 	at java.base/java.util.stream.Streams$RangeIntSpliterator.forEachRemaining(Streams.java:104)
