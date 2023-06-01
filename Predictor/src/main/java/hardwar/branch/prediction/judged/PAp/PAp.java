@@ -25,25 +25,56 @@ public class PAp implements BranchPredictor {
         this.branchInstructionSize = branchInstructionSize;
 
         // Initialize the PABHR with the given bhr and branch instruction size
-        PABHR = null;
+        PABHR = new RegisterBank(branchInstructionSize,BHRSize);;
 
         // Initializing the PAPHT with BranchInstructionSize as PHT Selector and 2^BHRSize row as each PHT entries
         // number and SCSize as block size
-        PAPHT = null;
+        PAPHT = new PerAddressPredictionHistoryTable(branchInstructionSize, BHRSize, SCSize);
 
         // Initialize the SC register
-        SC = null;
+        Bit[] zero = new Bit[SCSize];
+        for(int i=0;i<SCSize;i++) {
+            zero[i] = Bit.ZERO;
+        }
+        SC = new SIPORegister("SC", SCSize, zero);
     }
 
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
+        ShiftRegister current = PABHR.read(branchInstruction.getInstructionAddress());
+        Bit[] pht = getCacheEntry(branchInstruction.getInstructionAddress(),current.read() );
+        PAPHT.setDefault(pht, getDefaultBlock());
+        Bit[] values = PAPHT.get(pht);
+        SC.load(values);
+
+        if(values[0] == Bit.ONE) {
+            return BranchResult.TAKEN;
+        } else {
+            return BranchResult.NOT_TAKEN;
+        }
         // TODO: complete Task 1
-        return BranchResult.NOT_TAKEN;
     }
 
     @Override
     public void update(BranchInstruction instruction, BranchResult actual) {
         // TODO:complete Task 2
+        ShiftRegister current = PABHR.read(instruction.getInstructionAddress());
+        Bit[] currentNum = SC.read();
+        if(actual.equals(BranchResult.TAKEN)) {
+            currentNum = CombinationalLogic.count(currentNum, true, CountMode.SATURATING);
+        }
+        else {
+            currentNum = CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
+        }
+        PAPHT.put(current.read(), currentNum);
+        if(actual.equals(BranchResult.TAKEN)) {
+            current.insert(Bit.ONE);
+            PABHR.write(instruction.getInstructionAddress(),current.read());
+        }
+        else {
+            current.insert(Bit.ZERO);
+            PABHR.write(instruction.getInstructionAddress(),current.read());
+        }
     }
 
 
