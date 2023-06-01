@@ -44,7 +44,7 @@ public class SAs implements BranchPredictor {
         System.err.println(BHR.monitor());
         //System.err.println(PHT.monitor());
         System.err.println(Bit.arrayToString(current));
-        Bit[] entry = getCacheEntry(branchInstruction.getInstructionAddress(), current);
+        Bit[] entry = getCacheEntry(hashaddr, current);
         System.err.println(Bit.arrayToString(entry));
         PSPHT.setDefault(entry, getDefaultBlock());
         Bit[] values = PSPHT.get(entry);
@@ -70,7 +70,7 @@ public class SAs implements BranchPredictor {
         Bit[] hashaddr = CombinationalLogic.hash(branchInstruction.getInstructionAddress(), KSize, hashMode);
         ShiftRegister BHR = PSBHR.read(hashaddr);
         Bit[] current = BHR.read();
-        PSPHT.put(getCacheEntry(branchInstruction.getInstructionAddress(), current), currentNum);
+        PSPHT.put(getCacheEntry(hashaddr, current), currentNum);
         if(actual.equals(BranchResult.TAKEN)) {
             BHR.insert(Bit.ONE);
         }
