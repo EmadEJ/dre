@@ -29,9 +29,9 @@ public class GAs implements BranchPredictor {
      */
     public GAs(int BHRSize, int SCSize, int branchInstructionSize, int KSize, HashMode hashmode) {
         // TODO: complete the constructor
-        this.branchInstructionSize = 0;
-        this.KSize = 0;
-        this.hashMode = HashMode.XOR;
+        this.branchInstructionSize = branchInstructionSize;
+        this.KSize = KSize;
+        this.hashMode = hashmode;
 
         // Initialize the BHR register with the given size and no default value
         this.BHR = new SIPORegister("BHR", BHRSize, null);
@@ -57,12 +57,18 @@ public class GAs implements BranchPredictor {
      */
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
-//        // TODO: complete Task 1
-//        Bit[] current = BHR.read();
-//        PSPHT.setDefault(current, getDefaultBlock());
-//        Bit[] values = PSPHT.get(current);
-//        
-        return BranchResult.NOT_TAKEN;
+        // TODO: complete Task 1
+        Bit[] current = BHR.read();
+        Bit[] entry = getCacheEntry(branchInstruction.getInstructionAddress());
+        //System.err.println(Bit.arrayToString(entry));
+        PSPHT.setDefault(entry, getDefaultBlock());
+        Bit[] values = PSPHT.get(entry);
+        SC.load(values);
+        if(values[0] == Bit.ONE) {
+            return BranchResult.TAKEN;
+        } else {
+            return BranchResult.NOT_TAKEN;
+        }
     }
 
     /**
@@ -74,6 +80,21 @@ public class GAs implements BranchPredictor {
     @Override
     public void update(BranchInstruction branchInstruction, BranchResult actual) {
         // TODO: complete Task 2
+        Bit[] currentNum = SC.read();
+        if(actual.equals(BranchResult.TAKEN)) {
+            currentNum = CombinationalLogic.count(currentNum, true, CountMode.SATURATING);
+        }
+        else {
+            currentNum = CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
+        }
+        Bit[] current = BHR.read();
+        PSPHT.put(getCacheEntry(branchInstruction.getInstructionAddress()), currentNum);
+        if(actual.equals(BranchResult.TAKEN)) {
+            BHR.insert(Bit.ONE);
+        }
+        else {
+            BHR.insert(Bit.ZERO);
+        }
     }
 
     /**

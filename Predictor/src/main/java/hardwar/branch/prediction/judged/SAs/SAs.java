@@ -41,11 +41,11 @@ public class SAs implements BranchPredictor {
         Bit[] hashaddr = CombinationalLogic.hash(branchInstruction.getInstructionAddress(), KSize, hashMode);
         ShiftRegister BHR = PSBHR.read(hashaddr);
         Bit[] current = BHR.read();
-        System.err.println(BHR.monitor());
+        //System.err.println(BHR.monitor());
         //System.err.println(PHT.monitor());
-        System.err.println(Bit.arrayToString(current));
+        //System.err.println(Bit.arrayToString(current));
         Bit[] entry = getCacheEntry(hashaddr, current);
-        System.err.println(Bit.arrayToString(entry));
+        //System.err.println(Bit.arrayToString(entry));
         PSPHT.setDefault(entry, getDefaultBlock());
         Bit[] values = PSPHT.get(entry);
         SC.load(values);
