@@ -32,7 +32,7 @@ public class GAp implements BranchPredictor {
 
         // Initializing the PAPHT with BranchInstructionSize as PHT Selector and 2^BHRSize row as each PHT entries
         // number and SCSize as block size
-        PAPHT = new PerAddressPredictionHistoryTable(BHRSize, SCSize, branchInstructionSize);
+        PAPHT = new PerAddressPredictionHistoryTable(branchInstructionSize, BHRSize, SCSize);
 
         // Initialize the SC register
         Bit[] zero = new Bit[SCSize];
