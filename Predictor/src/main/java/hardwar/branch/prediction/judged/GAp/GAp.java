@@ -28,14 +28,18 @@ public class GAp implements BranchPredictor {
         this.branchInstructionSize = 0;
 
         // Initialize the BHR register with the given size and no default value
-        this.BHR = null;
+        this.BHR = new SIPORegister("BHR", BHRSize, null);
 
         // Initializing the PAPHT with BranchInstructionSize as PHT Selector and 2^BHRSize row as each PHT entries
         // number and SCSize as block size
-        PAPHT = null;
+        PAPHT = new PerAddressPredictionHistoryTable(BHRSize, SCSize, branchInstructionSize);
 
         // Initialize the SC register
-        SC = null;
+        Bit[] zero = new Bit[SCSize];
+        for(int i=0;i<SCSize;i++) {
+            zero[i] = Bit.ZERO;
+        }
+        SC = new SIPORegister("SC", SCSize, zero);
     }
 
     /**
@@ -47,7 +51,17 @@ public class GAp implements BranchPredictor {
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
         // TODO: complete Task 1
-        return BranchResult.NOT_TAKEN;
+        Bit[] current = BHR.read();
+        //PAPHT.setDefault(current, getDefaultBlock());
+        Bit[] values = PAPHT.get(getCacheEntry(branchInstruction.getJumpAddress()));
+        SC.load(values);
+
+
+        if(values[0] == Bit.ONE) {
+            return BranchResult.TAKEN;
+        } else {
+            return BranchResult.NOT_TAKEN;
+        }
     }
 
     /**
@@ -59,6 +73,22 @@ public class GAp implements BranchPredictor {
     @Override
     public void update(BranchInstruction branchInstruction, BranchResult actual) {
         // TODO : complete Task 2
+        Bit[] currentNum = SC.read();
+        if(actual.equals(BranchResult.TAKEN)) {
+            currentNum = CombinationalLogic.count(currentNum, true, CountMode.SATURATING);
+        }
+        else {
+            currentNum = CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
+        }
+
+        //PHT.put(BHR.read(), currentNum);
+        PAPHT.put(getCacheEntry(branchInstruction.getJumpAddress()), currentNum);
+        if(actual.equals(BranchResult.TAKEN)) {
+            BHR.insert(Bit.ONE);
+        }
+        else {
+            BHR.insert(Bit.ZERO);
+        }
     }
 
 
@@ -92,3 +122,4 @@ public class GAp implements BranchPredictor {
     }
 
 }
+
