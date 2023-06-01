@@ -58,7 +58,7 @@ public class SAs implements BranchPredictor {
 
     @Override
     public void update(BranchInstruction branchInstruction, BranchResult actual) {
-        System.err.println(this.monitor());
+        //System.err.println(this.monitor());
         // TODO: complete Task 2
         Bit[] currentNum = SC.read();
         if(actual.equals(BranchResult.TAKEN)) {

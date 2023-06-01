@@ -38,14 +38,42 @@ public class SAg implements BranchPredictor {
 
     @Override
     public BranchResult predict(BranchInstruction instruction) {
+        Bit[] hashaddr = hash(instruction.getInstructionAddress());
+        ShiftRegister BHR = PSBHR.read(hashaddr);
+        Bit[] current = BHR.read();
+        PHT.setDefault(current, getDefaultBlock());
+        Bit[] values = PHT.get(current);
+        SC.load(values);
 
+        if(values[0] == Bit.ONE) {
+            return BranchResult.TAKEN;
+        } else {
+            return BranchResult.NOT_TAKEN;
+        }
         // TODO: complete Task 1
-        return BranchResult.NOT_TAKEN;
     }
 
     @Override
     public void update(BranchInstruction branchInstruction, BranchResult actual) {
         // TODO: complete Task 2
+        Bit[] currentNum = SC.read();
+        if(actual.equals(BranchResult.TAKEN)) {
+            currentNum = CombinationalLogic.count(currentNum, true, CountMode.SATURATING);
+        }
+        else {
+            currentNum = CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
+        }
+        Bit[] hashaddr = hash(branchInstruction.getInstructionAddress());
+        ShiftRegister BHR = PSBHR.read(hashaddr);
+        Bit[] current = BHR.read();
+        PHT.put(BHR.read(), currentNum);
+        if(actual.equals(BranchResult.TAKEN)) {
+            BHR.insert(Bit.ONE);
+        }
+        else {
+            BHR.insert(Bit.ZERO);
+        }
+        PSBHR.write(hashaddr, BHR.read());
     }
 
     private Bit[] getRBAddressLine(Bit[] branchAddress) {
