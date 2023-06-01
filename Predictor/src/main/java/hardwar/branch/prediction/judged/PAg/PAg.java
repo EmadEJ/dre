@@ -25,13 +25,18 @@ public class PAg implements BranchPredictor {
     public PAg(int BHRSize, int SCSize, int branchInstructionSize) {
         // TODO: complete the constructor
         // Initialize the PABHR with the given bhr and branch instruction size
-        PABHR = null;
+
+        PABHR = new RegisterBank(branchInstructionSize,BHRSize);
 
         // Initialize the PHT with a size of 2^size and each entry having a saturating counter of size "SCSize"
-        PHT = null;
+        PHT  = new PageHistoryTable((1<<BHRSize), SCSize);
 
         // Initialize the SC register
-        SC = null;
+        Bit[] zero = new Bit[SCSize];
+        for(int i=0;i<SCSize;i++) {
+            zero[i] = Bit.ZERO;
+        }
+        SC = new SIPORegister("SC", SCSize, zero);
     }
 
     /**
@@ -40,8 +45,17 @@ public class PAg implements BranchPredictor {
      */
     @Override
     public BranchResult predict(BranchInstruction instruction) {
+        ShiftRegister current = PABHR.read(instruction.getInstructionAddress());
+        PHT.setDefault(current.read(), getDefaultBlock());
+        Bit[] values = PHT.get(current.read());
+        SC.load(values);
+
+        if(values[0] == Bit.ONE) {
+            return BranchResult.TAKEN;
+        } else {
+            return BranchResult.NOT_TAKEN;
+        }
         // TODO: complete Task 1
-        return BranchResult.NOT_TAKEN;
     }
 
     /**
@@ -50,7 +64,24 @@ public class PAg implements BranchPredictor {
      */
     @Override
     public void update(BranchInstruction instruction, BranchResult actual) {
+        ShiftRegister current = PABHR.read(instruction.getInstructionAddress());
         // TODO: complete Task 2
+        Bit[] currentNum = SC.read();
+        if(actual.equals(BranchResult.TAKEN)) {
+            currentNum = CombinationalLogic.count(currentNum, true, CountMode.SATURATING);
+        }
+        else {
+            currentNum = CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
+        }
+        PHT.put(current.read(), currentNum);
+        if(actual.equals(BranchResult.TAKEN)) {
+            current.insert(Bit.ONE);
+            PABHR.write(instruction.getInstructionAddress(),current.read());
+        }
+        else {
+            current.insert(Bit.ZERO);
+            PABHR.write(instruction.getInstructionAddress(),current.read());
+        }
     }
 
     /**
