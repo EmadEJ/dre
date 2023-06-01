@@ -44,6 +44,7 @@ public class SAs implements BranchPredictor {
         System.err.println(BHR.monitor());
         //System.err.println(PHT.monitor());
         Bit[] entry = getCacheEntry(branchInstruction.getInstructionAddress(), current);
+        System.err.println(Bit.arrayToString(entry));
         PSPHT.setDefault(entry, getDefaultBlock());
         Bit[] values = PSPHT.get(entry);
         SC.load(values);
