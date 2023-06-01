@@ -49,6 +49,7 @@ public class GAg implements BranchPredictor {
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
         // TODO : complete Task 1
+        System.err.println(BHR.monitor());
         Bit[] current = BHR.read();
         System.err.println(PHT.monitor());
         PHT.setDefault(current, getDefaultBlock());
