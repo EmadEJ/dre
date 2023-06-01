@@ -50,7 +50,7 @@ public class GAg implements BranchPredictor {
     public BranchResult predict(BranchInstruction branchInstruction) {
         // TODO : complete Task 1
         Bit[] current = BHR.read();
-        System.err.println(current);
+        System.err.println(PHT.monitor());
         PHT.setDefault(current, getDefaultBlock());
         Bit[] values = PHT.get(current);
         SC.load(values);
