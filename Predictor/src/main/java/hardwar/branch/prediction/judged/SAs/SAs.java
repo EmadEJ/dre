@@ -37,9 +37,11 @@ public class SAs implements BranchPredictor {
 
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
+        System.err.println(this.monitor());
         Bit[] hashaddr = CombinationalLogic.hash(branchInstruction.getInstructionAddress(), KSize, hashMode);
         ShiftRegister BHR = PSBHR.read(hashaddr);
         Bit[] current = BHR.read();
+        System.err.println(BHR.monitor());
         //System.err.println(PHT.monitor());
         Bit[] entry = getCacheEntry(branchInstruction.getInstructionAddress(), current);
         PSPHT.setDefault(entry, getDefaultBlock());
@@ -54,6 +56,7 @@ public class SAs implements BranchPredictor {
 
     @Override
     public void update(BranchInstruction branchInstruction, BranchResult actual) {
+        System.err.println(this.monitor());
         // TODO: complete Task 2
         Bit[] currentNum = SC.read();
         if(actual.equals(BranchResult.TAKEN)) {
