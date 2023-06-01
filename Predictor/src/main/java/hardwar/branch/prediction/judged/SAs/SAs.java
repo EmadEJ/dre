@@ -37,7 +37,7 @@ public class SAs implements BranchPredictor {
 
     @Override
     public BranchResult predict(BranchInstruction branchInstruction) {
-        System.err.println(this.monitor());
+        //System.err.println(this.monitor());
         Bit[] hashaddr = CombinationalLogic.hash(branchInstruction.getInstructionAddress(), KSize, hashMode);
         ShiftRegister BHR = PSBHR.read(hashaddr);
         Bit[] current = BHR.read();
