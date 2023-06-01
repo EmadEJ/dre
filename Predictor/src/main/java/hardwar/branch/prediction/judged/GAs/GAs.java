@@ -57,7 +57,7 @@ public class GAs implements BranchPredictor {
         Bit[] current = BHR.read();
         Bit[] entry = getCacheEntry(branchInstruction.getInstructionAddress());
         //System.err.println(Bit.arrayToString(entry));
-        PSPHT.setDefault(entry, getDefaultBlock());
+        PSPHT.setDefault(CombinationalLogic.hash(entry, KSize, hashMode), getDefaultBlock());
         Bit[] values = PSPHT.get(entry);
         SC.load(values);
         if(values[0] == Bit.ONE) {
