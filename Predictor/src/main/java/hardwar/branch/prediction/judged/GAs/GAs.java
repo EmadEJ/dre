@@ -84,7 +84,7 @@ public class GAs implements BranchPredictor {
             currentNum = CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
         }
         Bit[] current = BHR.read();
-        PSPHT.put(getCacheEntry(branchInstruction.getInstructionAddress()), currentNum);
+        PSPHT.put(getCacheEntry(CombinationalLogic.hash(branchInstruction.getInstructionAddress(), KSize, hashMode)), currentNum);
         if(actual.equals(BranchResult.TAKEN)) {
             BHR.insert(Bit.ONE);
         }
