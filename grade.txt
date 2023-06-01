@@ -1,4 +1,4 @@
-Thu Jun  1 13:16:13 UTC 2023
+Thu Jun  1 13:18:21 UTC 2023
 GAg: 
 Test passed, 1000 out of 1000 assertions passed
 
@@ -28,6 +28,7 @@ null
 |r  | 0 | 0 | 0 | 0 |
 +-------------------+
 
+0000
 Exception in thread "main" java.lang.NullPointerException
 	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
 	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
@@ -37,7 +38,7 @@ Exception in thread "main" java.lang.NullPointerException
 	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
 	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
 	at hardwar.branch.prediction.shared.Bit.arrayToString(Bit.java:48)
-	at hardwar.branch.prediction.judged.SAs.SAs.predict(SAs.java:47)
+	at hardwar.branch.prediction.judged.SAs.SAs.predict(SAs.java:48)
 	at hardwar.branch.prediction.judge.PredictorSimulator.lambda$simulate$0(PredictorSimulator.java:27)
 	at java.base/java.util.stream.IntPipeline$1$1.accept(IntPipeline.java:180)
 	at java.base/java.util.stream.Streams$RangeIntSpliterator.forEachRemaining(Streams.java:104)
