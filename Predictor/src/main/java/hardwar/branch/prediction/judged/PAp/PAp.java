@@ -59,6 +59,7 @@ public class PAp implements BranchPredictor {
     public void update(BranchInstruction instruction, BranchResult actual) {
         // TODO:complete Task 2
         ShiftRegister current = PABHR.read(instruction.getInstructionAddress());
+        Bit[] pht = getCacheEntry(instruction.getInstructionAddress(),current.read() );
         Bit[] currentNum = SC.read();
         if(actual.equals(BranchResult.TAKEN)) {
             currentNum = CombinationalLogic.count(currentNum, true, CountMode.SATURATING);
@@ -66,7 +67,7 @@ public class PAp implements BranchPredictor {
         else {
             currentNum = CombinationalLogic.count(currentNum, false, CountMode.SATURATING);
         }
-        PAPHT.put(current.read(), currentNum);
+        PAPHT.put(pht, currentNum);
         if(actual.equals(BranchResult.TAKEN)) {
             current.insert(Bit.ONE);
             PABHR.write(instruction.getInstructionAddress(),current.read());

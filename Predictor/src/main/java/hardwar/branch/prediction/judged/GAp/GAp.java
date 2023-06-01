@@ -25,7 +25,7 @@ public class GAp implements BranchPredictor {
      */
     public GAp(int BHRSize, int SCSize, int branchInstructionSize) {
         // TODO: complete the constructor
-        this.branchInstructionSize = 0;
+        this.branchInstructionSize = branchInstructionSize;
 
         // Initialize the BHR register with the given size and no default value
         this.BHR = new SIPORegister("BHR", BHRSize, null);
@@ -52,8 +52,9 @@ public class GAp implements BranchPredictor {
     public BranchResult predict(BranchInstruction branchInstruction) {
         // TODO: complete Task 1
         Bit[] current = BHR.read();
-        //PAPHT.setDefault(current, getDefaultBlock());
-        Bit[] values = PAPHT.get(getCacheEntry(branchInstruction.getJumpAddress()));
+        PAPHT.setDefault(current, getDefaultBlock());
+        Bit[] values = PAPHT.get(getCacheEntry(branchInstruction.getInstructionAddress()));
+        
         SC.load(values);
 
 
@@ -82,7 +83,7 @@ public class GAp implements BranchPredictor {
         }
 
         //PHT.put(BHR.read(), currentNum);
-        PAPHT.put(getCacheEntry(branchInstruction.getJumpAddress()), currentNum);
+        PAPHT.put(getCacheEntry(branchInstruction.getInstructionAddress()), currentNum);
         if(actual.equals(BranchResult.TAKEN)) {
             BHR.insert(Bit.ONE);
         }
